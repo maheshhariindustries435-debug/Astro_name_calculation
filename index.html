@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tamil Numerology Calculator - Calculate numerology numbers and analyze documents for matching names">
-    <meta name="keywords" content="numerology, tamil, calculator, document analysis, pdf, ppt">
+    <meta name="description" content="Tamil Numerology Calculator - Calculate numerology numbers and analyze multiple names">
+    <meta name="keywords" content="numerology, tamil, calculator, name analysis">
     <meta name="author" content="Astrology App Developer">
     <title>எண்கணித கணக்கீட்டாளர்</title>
     <link rel="stylesheet" href="styles.css">
@@ -16,7 +16,7 @@
         
         <div class="tabs">
             <button class="tab-button active" data-tab="calculator">கணக்கீட்டாளர்</button>
-            <button class="tab-button" data-tab="document">ஆவண பகுப்பாய்வு</button>
+            <button class="tab-button" data-tab="bulk">பல பெயர்கள் பகுப்பாய்வு</button>
             <button class="tab-button" data-tab="about">எண்கணிதம் பற்றி</button>
             <button class="tab-button" data-tab="meanings">எண் பொருள்கள்</button>
             <button class="tab-button" data-tab="history">வரலாறு</button>
@@ -34,22 +34,19 @@
             </div>
         </div>
         
-        <div id="document-tab" class="tab-content">
-            <h2>ஆவண பகுப்பாய்வு</h2>
-            <p>PDF அல்லது PPT ஆவணத்தை பதிவேற்றி பெயர்களை பகுப்பாய்வு செய்யவும்</p>
+        <div id="bulk-tab" class="tab-content">
+            <h2>பல பெயர்கள் பகுப்பாய்வு</h2>
+            <p>இடைவெளிகளால் பிரிக்கப்பட்ட பெயர்களை உள்ளிடவும் (எ.கா., mageshwaran sharmila thejasrini)</p>
             
-            <form id="documentForm">
-                <label for="documentFile">PDF அல்லது PPT ஆவணத்தை தேர்ந்தெடுக்கவும்:</label>
-                <input type="file" id="documentFile" accept=".pdf,.ppt,.pptx" required>
+            <form id="bulkForm">
+                <label for="bulkNames">பெயர்களை உள்ளிடவும் (இடைவெளிகளால் பிரிக்கப்பட்டது):</label>
+                <input type="text" id="bulkNames" placeholder="mageshwaran sharmila thejasrini" required>
                 
-                <label for="targetNumber">இலக்கு எண்ணை உள்ளிடவும் (1-9):</label>
-                <input type="number" id="targetNumber" min="1" max="9" placeholder="1-9 இடையில் எண்ணை உள்ளிடவும்" required>
-                
-                <button type="submit">ஆவணத்தை பகுப்பாய்வு செய்</button>
+                <button type="submit">பெயர்களை பகுப்பாய்வு செய்</button>
             </form>
             
-            <div id="documentResult" class="result-container">
-                <!-- Document analysis results will appear here -->
+            <div id="bulkResult" class="result-container">
+                <!-- Bulk analysis results will appear here -->
             </div>
         </div>
         

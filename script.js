@@ -19,24 +19,15 @@ const tamilMeanings = {
     9: "மனிதநேயவாதி - இரக்கம், தாராளம், ஆதர்ஷம்"
 };
 
-// Sample names database for demonstration (in a real app, this would come from document parsing)
-const sampleNames = [
-    "அருண்", "பாலாஜி", "சித்ரா", "தினேஷ்", "எழில்", "பிரகாஷ்", "கிருஷ்ணா", "லக்ஷ்மி",
-    "மாதவன்", "நித்யா", "ஒளி", "பிரியா", "ராஜ்", "சுஜாதா", "தர்ஷன்", "உமா",
-    "விஜய்", "சுரேஷ்", "ஆனந்த்", "பாரதி", "கார்த்தி", "லீலா", "மோகன்", "நவீன்",
-    "ஐஸ்வர்யா", "ராகுல்", "சந்தோஷ்", "தேஜஸ்வி", "உஜ்ஜ瓦ல்", "வாஸ்", "ஆதித்யா", "பவித்ரா"
-];
-
 // DOM elements
 const nameForm = document.getElementById('nameForm');
 const userNameInput = document.getElementById('userName');
 const resultContainer = document.getElementById('result');
 
-// Document analysis elements
-const documentForm = document.getElementById('documentForm');
-const documentFileInput = document.getElementById('documentFile');
-const targetNumberInput = document.getElementById('targetNumber');
-const documentResultContainer = document.getElementById('documentResult');
+// Bulk analysis elements
+const bulkForm = document.getElementById('bulkForm');
+const bulkNamesInput = document.getElementById('bulkNames');
+const bulkResultContainer = document.getElementById('bulkResult');
 
 // Tab elements
 const tabButtons = document.querySelectorAll('.tab-button');
@@ -48,10 +39,10 @@ nameForm.addEventListener('submit', function(e) {
     calculateNumerology(userNameInput.value.trim());
 });
 
-// Add event listener to document form
-documentForm.addEventListener('submit', function(e) {
+// Add event listener to bulk form
+bulkForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    analyzeDocument(documentFileInput.files[0], targetNumberInput.value);
+    analyzeBulkNames(bulkNamesInput.value);
 });
 
 // Add event listeners to tabs
@@ -153,74 +144,129 @@ function displayResults(initialList, originalName) {
     resultContainer.classList.add('visible');
 }
 
-// Analyze document and find matching names
-function analyzeDocument(file, targetNumber) {
+// Analyze bulk names and display each name with its numerology number
+function analyzeBulkNames(namesText) {
     // Clear previous results
-    documentResultContainer.innerHTML = '';
-    documentResultContainer.classList.remove('visible');
+    bulkResultContainer.innerHTML = '';
+    bulkResultContainer.classList.remove('visible');
     
     // Validate inputs
-    if (!file) {
-        showError('ஒரு ஆவணத்தை தேர்ந்தெடுக்கவும்', documentResultContainer);
+    if (!namesText) {
+        showError('ஒன்றுக்கும் மேற்பட்ட பெயர்களை உள்ளிடவும்', bulkResultContainer);
         return;
     }
     
-    if (!targetNumber || targetNumber < 1 || targetNumber > 9) {
-        showError('1-9 இடையில் ஒரு எண்ணை உள்ளிடவும்', documentResultContainer);
+    // Split text into individual names by spaces
+    const names = namesText.split(/\s+/)
+        .map(name => name.trim())
+        .filter(name => name.length > 0);
+    
+    if (names.length === 0) {
+        showError('சரியான பெயர்களை உள்ளிடவும்', bulkResultContainer);
         return;
     }
     
-    // In a real application, you would parse the PDF/PPT here
-    // For this demo, we'll use sample names
-    const matchedNames = findMatchingNames(parseInt(targetNumber));
+    // Calculate numerology numbers for each name
+    const nameResults = calculateNumerologyForNames(names);
     
     // Display results
-    displayDocumentResults(file.name, targetNumber, matchedNames);
+    displayBulkResults(nameResults);
 }
 
-// Find names that match the target numerology number
-function findMatchingNames(targetNumber) {
-    const matchedNames = [];
+// Calculate numerology numbers for multiple names
+function calculateNumerologyForNames(names) {
+    const results = [];
     
-    // For demonstration, we'll check sample names
-    // In a real app, this would check names extracted from the document
-    sampleNames.forEach(name => {
-        const numerologyNumber = getNumerologyNumber(name);
-        if (numerologyNumber === targetNumber) {
-            matchedNames.push(name);
+    names.forEach(name => {
+        // Skip empty names
+        if (!name) return;
+        
+        try {
+            // Convert to English lowercase for numerology calculation
+            const englishName = convertTamilToEnglish(name);
+            
+            // Convert to lowercase
+            const lowerName = englishName.toLowerCase();
+            
+            // Remove spaces and convert to array of characters
+            const cleanName = lowerName.replace(/\s+/g, '');
+            const nameChars = cleanName.split('');
+            
+            // Map characters to numbers
+            const mappedValues = [];
+            for (let char of nameChars) {
+                if (charMap[char]) {
+                    mappedValues.push(charMap[char]);
+                } else {
+                    // Skip invalid characters
+                    continue;
+                }
+            }
+            
+            // Perform recursive calculation
+            const numerologyNumber = calculateRecursiveSilent(mappedValues);
+            
+            results.push({
+                originalName: name,
+                numerologyNumber: numerologyNumber
+            });
+        } catch (error) {
+            console.error(`Error calculating numerology for ${name}:`, error);
+            results.push({
+                originalName: name,
+                numerologyNumber: 'Error'
+            });
         }
     });
     
-    return matchedNames;
+    return results;
 }
 
-// Get numerology number for a name (without displaying steps)
-function getNumerologyNumber(name) {
-    // Convert to lowercase
-    const lowerName = name.toLowerCase();
+// Convert Tamil names to English transliteration (simplified)
+function convertTamilToEnglish(tamilName) {
+    // This is a simplified conversion for demonstration
+    // In a real application, you would use a proper transliteration library
     
-    // Check for invalid characters
-    const validChars = /^[a-z\s]+$/;
-    if (!validChars.test(lowerName)) {
-        return null;
-    }
+    // For now, we'll just return the name as is if it's already in English
+    // or convert common Tamil names to their English equivalents
+    const tamilToEnglishMap = {
+        // Add common Tamil names and their English equivalents here
+        'அருண்': 'arun',
+        'பாலாஜி': 'balaji',
+        'சித்ரா': 'chitra',
+        'தினேஷ்': 'dinesh',
+        'எழில்': 'ezhil',
+        'பிரகாஷ்': 'prakash',
+        'கிருஷ்ணா': 'krishna',
+        'லக்ஷ்மி': 'lakshmi',
+        'மாதவன்': 'madhavan',
+        'நித்யா': 'nithya',
+        'ஒளி': 'oli',
+        'பிரியா': 'priya',
+        'ராஜ்': 'raj',
+        'சுஜாதா': 'sujatha',
+        'தர்ஷன்': 'darshan',
+        'உமா': 'uma',
+        'விஜய்': 'vijay',
+        'சுரேஷ்': 'suresh',
+        'ஆனந்த்': 'anand',
+        'பாரதி': 'bharathi',
+        'கார்த்தி': 'karthi',
+        'லீலா': 'leela',
+        'மோகன்': 'mohan',
+        'நவீன்': 'naveen',
+        'ஐஸ்வர்யா': 'aishwarya',
+        'ராகுல்': 'rahul',
+        'சந்தோஷ்': 'santhosh',
+        'தேஜஸ்வி': 'tejasvi',
+        'உஜ்ஜ瓦ல்': 'ujjwal',
+        'வாஸ்': 'vas',
+        'ஆதித்யா': 'aditya',
+        'பவித்ரா': 'pavithra'
+    };
     
-    // Remove spaces and convert to array of characters
-    const cleanName = lowerName.replace(/\s+/g, '');
-    const nameChars = cleanName.split('');
-    
-    // Map characters to numbers
-    const mappedValues = [];
-    for (let char of nameChars) {
-        if (charMap[char]) {
-            mappedValues.push(charMap[char]);
-        } else {
-            return null;
-        }
-    }
-    
-    // Perform recursive calculation
-    return calculateRecursiveSilent(mappedValues);
+    // Return mapped English name or the original name in lowercase
+    return tamilToEnglishMap[tamilName] || tamilName.toLowerCase();
 }
 
 // Recursive calculation without displaying steps
@@ -241,58 +287,61 @@ function calculateRecursiveSilent(list) {
     return calculateRecursiveSilent(nextList);
 }
 
-// Display document analysis results
-function displayDocumentResults(fileName, targetNumber, matchedNames) {
+// Display bulk analysis results
+function displayBulkResults(nameResults) {
     // Clear previous results
-    documentResultContainer.innerHTML = '';
+    bulkResultContainer.innerHTML = '';
     
     // Create title
     const title = document.createElement('h2');
-    title.textContent = 'ஆவண பகுப்பாய்வு முடிவுகள்';
-    documentResultContainer.appendChild(title);
+    title.textContent = 'பெயர்கள் பகுப்பாய்வு முடிவுகள்';
+    bulkResultContainer.appendChild(title);
     
-    // Show file name and target number
-    const fileInfoDiv = document.createElement('div');
-    fileInfoDiv.className = 'process-steps';
-    fileInfoDiv.innerHTML = `
-        <p><strong>ஆவணம்:</strong> ${fileName}</p>
-        <p><strong>இலக்கு எண்:</strong> ${targetNumber}</p>
-    `;
-    documentResultContainer.appendChild(fileInfoDiv);
+    // Show total names processed
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'process-steps';
+    totalDiv.innerHTML = `<p><strong>மொத்த பெயர்கள்:</strong> ${nameResults.length}</p>`;
+    bulkResultContainer.appendChild(totalDiv);
     
-    // Show result
-    const resultDiv = document.createElement('div');
-    resultDiv.className = 'document-result';
-    resultDiv.innerHTML = `பொருந்தும் பெயர்கள்: <span>${matchedNames.length}</span>`;
-    documentResultContainer.appendChild(resultDiv);
+    // Create results table
+    const resultsDiv = document.createElement('div');
+    resultsDiv.className = 'matched-names';
     
-    // Show matched names
-    if (matchedNames.length > 0) {
-        const namesDiv = document.createElement('div');
-        namesDiv.className = 'matched-names';
-        namesDiv.innerHTML = '<h3>பொருந்தும் பெயர்கள்:</h3>';
+    const resultsList = document.createElement('ul');
+    resultsList.style.listStyle = 'none';
+    resultsList.style.padding = '0';
+    
+    nameResults.forEach(result => {
+        const listItem = document.createElement('li');
+        listItem.style.padding = '10px';
+        listItem.style.margin = '5px 0';
+        listItem.style.backgroundColor = '#f0f4f8';
+        listItem.style.borderRadius = '5px';
+        listItem.style.display = 'flex';
+        listItem.style.justifyContent = 'space-between';
         
-        const namesList = document.createElement('ul');
-        matchedNames.forEach(name => {
-            const listItem = document.createElement('li');
-            listItem.textContent = name;
-            namesList.appendChild(listItem);
-        });
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = result.originalName;
+        nameSpan.style.fontWeight = 'bold';
         
-        namesDiv.appendChild(namesList);
-        documentResultContainer.appendChild(namesDiv);
-    } else {
-        const noMatchDiv = document.createElement('div');
-        noMatchDiv.className = 'process-steps';
-        noMatchDiv.innerHTML = '<p>கொடுக்கப்பட்ட இலக்கு எண்ணுடன் பொருந்தும் பெயர்கள் எதுவும் கிடைக்கவில்லை.</p>';
-        documentResultContainer.appendChild(noMatchDiv);
-    }
+        const numberSpan = document.createElement('span');
+        numberSpan.textContent = result.numerologyNumber;
+        numberSpan.style.color = '#667eea';
+        numberSpan.style.fontWeight = 'bold';
+        
+        listItem.appendChild(nameSpan);
+        listItem.appendChild(numberSpan);
+        resultsList.appendChild(listItem);
+    });
+    
+    resultsDiv.appendChild(resultsList);
+    bulkResultContainer.appendChild(resultsDiv);
     
     // Add to history
-    addToDocumentHistory(fileName, targetNumber, matchedNames.length);
+    addToBulkHistory(nameResults.length);
     
     // Make container visible
-    documentResultContainer.classList.add('visible');
+    bulkResultContainer.classList.add('visible');
 }
 
 // Recursive calculation function
@@ -382,17 +431,15 @@ function addToHistory(name, result) {
     localStorage.setItem('numerologyHistory', JSON.stringify(history));
 }
 
-// Add document analysis to history
-function addToDocumentHistory(fileName, targetNumber, matchCount) {
+// Add bulk analysis to history
+function addToBulkHistory(totalCount) {
     // Get existing history or initialize empty array
     let history = JSON.parse(localStorage.getItem('numerologyHistory')) || [];
     
     // Add new entry
     history.unshift({
-        type: 'document',
-        fileName: fileName,
-        targetNumber: targetNumber,
-        matchCount: matchCount,
+        type: 'bulk',
+        totalCount: totalCount,
         date: new Date().toLocaleString('ta-IN')
     });
     
@@ -425,10 +472,10 @@ function loadHistory() {
                     <span>${entry.date}</span>
                 </div>
             `;
-        } else if (entry.type === 'document') {
+        } else if (entry.type === 'bulk') {
             historyHTML += `
                 <div class="history-item">
-                    <span><strong>${entry.fileName}</strong> → இலக்கு: ${entry.targetNumber}, பொருந்தும்: ${entry.matchCount}</span>
+                    <span><strong>பல பெயர்கள்</strong> → மொத்தம்: ${entry.totalCount} பெயர்கள்</span>
                     <span>${entry.date}</span>
                 </div>
             `;
