@@ -1,0 +1,2 @@
+# This is a static website that uses Python's built-in HTTP server
+# No additional Python packages are required for basic functionality

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tamil Numerology Calculator - Calculate numerology numbers and analyze documents for matching names">
+    <meta name="keywords" content="numerology, tamil, calculator, document analysis, pdf, ppt">
+    <meta name="author" content="Astrology App Developer">
+    <title>எண்கணித கணக்கீட்டாளர்</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>எண்கணித கணக்கீட்டாளர்</h1>
+        <p>உங்கள் பெயரில் மறைக்கப்பட்ட பொருளைக் கண்டுபிடியுங்கள்</p>
+        
+        <div class="tabs">
+            <button class="tab-button active" data-tab="calculator">கணக்கீட்டாளர்</button>
+            <button class="tab-button" data-tab="document">ஆவண பகுப்பாய்வு</button>
+            <button class="tab-button" data-tab="about">எண்கணிதம் பற்றி</button>
+            <button class="tab-button" data-tab="meanings">எண் பொருள்கள்</button>
+            <button class="tab-button" data-tab="history">வரலாறு</button>
+        </div>
+        
+        <div id="calculator-tab" class="tab-content active">
+            <form id="nameForm">
+                <label for="userName">உங்கள் பெயரை உள்ளிடவும்:</label>
+                <input type="text" id="userName" placeholder="உங்கள் முழு பெயரை உள்ளிடவும்" required>
+                <button type="submit">கணக்கிடு</button>
+            </form>
+            
+            <div id="result" class="result-container">
+                <!-- முடிவுகள் இங்கே தோன்றும் -->
+            </div>
+        </div>
+        
+        <div id="document-tab" class="tab-content">
+            <h2>ஆவண பகுப்பாய்வு</h2>
+            <p>PDF அல்லது PPT ஆவணத்தை பதிவேற்றி பெயர்களை பகுப்பாய்வு செய்யவும்</p>
+            
+            <form id="documentForm">
+                <label for="documentFile">PDF அல்லது PPT ஆவணத்தை தேர்ந்தெடுக்கவும்:</label>
+                <input type="file" id="documentFile" accept=".pdf,.ppt,.pptx" required>
+                
+                <label for="targetNumber">இலக்கு எண்ணை உள்ளிடவும் (1-9):</label>
+                <input type="number" id="targetNumber" min="1" max="9" placeholder="1-9 இடையில் எண்ணை உள்ளிடவும்" required>
+                
+                <button type="submit">ஆவணத்தை பகுப்பாய்வு செய்</button>
+            </form>
+            
+            <div id="documentResult" class="result-container">
+                <!-- Document analysis results will appear here -->
+            </div>
+        </div>
+        
+        <div id="about-tab" class="tab-content">
+            <h2>எண்கணிதம் பற்றி</h2>
+            <p>எண்கணிதம் என்பது எண்களுக்கும் உடல் பொருட்களுக்கும் உயிருள்ள விஷயங்களுக்கும் இடையிலான மystical உறவைப் பற்றிய ஆய்வாகும். எண்களுக்கு உள்ளான அதிர்வுகள் நம் வாழ்வை பாதிக்கின்றன என்பதை அடிப்படையாகக் கொண்டது.</p>
+            
+            <h3>இந்த கணக்கீட்டாளர் எவ்வாறு வேலை செய்கிறது</h3>
+            <ol>
+                <li>உங்கள் பெயரில் உள்ள ஒவ்வொரு எழுத்தும் குறிப்பிட்ட எண்ணுடன் இணைக்கப்படுகிறது</li>
+                <li>இந்த எண்கள் சிறப்பு முறையில் சேர்க்கப்படுகின்றன</li>
+                <li>இறுதி ஒற்றை இலக்க எண் உங்கள் கோர் பண்புகளை வெளிப்படுத்துகிறது</li>
+            </ol>
+            
+            <h3>எழுத்து எண் இணைப்பு</h3>
+            <div class="mapping-container">
+                <div class="mapping-column">
+                    <p><strong>1:</strong> A, I, J, Q, Y</p>
+                    <p><strong>2:</strong> B, K, R</p>
+                    <p><strong>3:</strong> C, G, L, S</p>
+                    <p><strong>4:</strong> D, M, T</p>
+                </div>
+                <div class="mapping-column">
+                    <p><strong>5:</strong> E, H, N, X</p>
+                    <p><strong>6:</strong> U, V, W</p>
+                    <p><strong>7:</strong> O, Z</p>
+                    <p><strong>8:</strong> F, P</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="meanings-tab" class="tab-content">
+            <h2>எண் பொருள்கள்</h2>
+            <div class="meaning-card">
+                <h3>1 - தலைவர்</h3>
+                <p>சுயாதீனம், மு ambitious, தீர்மானம். திட்டங்களைத் தொடங்குவதில் இயற்கையான தலைவர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>2 - ஊடகர்</h3>
+                <p>நயம், ஒத்துழைப்பு, உணர்ச்சிமயம். இசைவு மற்றும் கூட்டுணவை உருவாக்குவதில் சிறந்தவர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>3 - தொடர்பாளர்</h3>
+                <p>படைப்பு, வெளிப்பாடு, சமூகம். சமூக சூழலில் சிறந்து விளங்கும் இயற்கை நடிகர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>4 - கட்டுமானக்காரர்</h3>
+                <p>நடைமுறை, நம்பகம், உழைப்பாளி. வலுவான அடிப்படைகள் மற்றும் கட்டமைப்புகளை உருவாக்குவதில் சிறந்தவர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>5 - சாகசக்காரர்</h3>
+                <p>பன்முகம், ஆர்வம், சுதந்திரம்-காதல். மாற்றம் மற்றும் புதிய அனுபவங்களில் சிறந்து விளங்குகின்றன.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>6 - பராமரிப்பாளர்</h3>
+                <p>பொறுப்பு, காதல், இசைவு. குடும்பம் மற்றும் சமூகத்தை மதிக்கும் இயற்கை பராமரிப்பாளர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>7 - தேடுபவர்</h3>
+                <p>பகுப்பாய்வு, ஆன்மீகம், உள்ளார்ந்த. அறிவையும் உண்மையையும் தேடும் ஆழ்ந்த சிந்தனையாளர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>8 - சாதனையாளர்</h3>
+                <p>மு ambitious, சக்தி, இலக்கு நோக்கம். பொருள் வெற்றியை உருவாக்குவதில் சிறந்தவர்கள்.</p>
+            </div>
+            <div class="meaning-card">
+                <h3>9 - மனிதநேயவாதி</h3>
+                <p>இரக்கம், தாராளம், ஆதர்ஷம். உலகத்தைப் பற்றி கவலைப்படும் இயற்கை மனிதநேயவாதிகள்.</p>
+            </div>
+        </div>
+        
+        <div id="history-tab" class="tab-content">
+            <h2>கணக்கீட்டு வரலாறு</h2>
+            <div id="history-content">
+                <p>சில பெயர்களைக் கணக்கிட்டு உங்கள் வரலாற்றை இங்கே பாருங்கள்!</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: tamil-numerology-calculator
+    env: static
+    buildCommand: echo "Build completed"
+    startCommand: python -m http.server 8000
+    staticPublishPath: ./
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.13
